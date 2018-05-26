@@ -9,7 +9,7 @@ OBJDUMP :=$(CROSS)objdump
 TARGET=zumobot-serial-protocol
 TARGET-DIR=build/
 MMCU?=
-AVRDUDE_FLAGS?=
+PORT?=
 
 SOURCES=$(wildcard src/*.cpp) $(wildcard src/*.c)
 INCLUDES=
@@ -55,7 +55,7 @@ $(TARGET).lst: $(TARGET).elf
 	$(OBJDUMP) -h -S $< > $@
 
 avrdude:
-	avrdude $(AVRDUDE_FLAGS) -e -m flash -i $(TARGET).hex
+	avrdude -p $(MMCU) -c avr109 -P $(PORT) -U flash:w:$(TARGET).hex
 
 clean:
 	-rm -f $(addprefix $(TARGET), .elf .hex .bin .lst .map)
