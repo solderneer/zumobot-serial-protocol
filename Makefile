@@ -12,7 +12,7 @@ MMCU?=
 PORT?=
 
 SOURCES=$(wildcard src/*.cpp) $(wildcard src/*.c)
-INCLUDES=
+INCLUDES=inc/
 
 SETTINGS=inc/settings.h
 
