@@ -6,14 +6,15 @@ SIZE    :=$(CROSS)size
 OBJCOPY :=$(CROSS)objcopy
 OBJDUMP :=$(CROSS)objdump
 
-TARGET=a
+TARGET=zumobot-serial-protocol
+TARGET-DIR=build/
 MMCU?=
 AVRDUDE_FLAGS?=
 
-SOURCES=$(wildcard *.cpp) $(wildcard *.c)
+SOURCES=$(wildcard src/*.cpp) $(wildcard src/*.c)
 INCLUDES=
 
-SETTINGS=settings.h
+SETTINGS=inc/settings.h
 
 OBJECTS=$(SOURCES:.cpp=.o)
 OBJECTS:=$(OBJECTS:.c=.o)
