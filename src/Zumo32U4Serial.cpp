@@ -27,19 +27,49 @@ void Zumo32U4Serial::init2(void)
     bufferReset(&Zumo32U4Serial::UART_Buffer);
 }
 
-void Zumo32U4Serial::UART_Transmit(uint8_t byte)
+void Zumo32U4Serial::UART_TransmitByte(uint8_t byte)
 {
-
+    // Blocking Transmit
+    while(!(UCSR0A & (1 << UDRE0)))
+    {
+        UDR0 = byte;
+    }
 }
 
-void Zumo32U4Serial::UART_Receive(uint8_t* byte)
+void Zumo32U4Serial::UART_TransmitBytes(uint8_t *bytes, uint16_t cnt)
 {
+    // Blocking Transmit
+    int i;
+
+    for(i = 0; i < cnt; i++) 
+    {
+        while(!(UCSR0A & (1 << UDRE0)))
+        {
+            UDR0 = *(bytes + i);
+        }
+    }
+}
+
+void Zumo32U4Serial::UART_ReceiveByte(uint8_t* byte)
+{
+    // Non-blocking Receive
     bufferGet(&Zumo32U4Serial::UART_Buffer, byte);
+}
+
+void Zumo32U4Serial::UART_ReceiveBytes(uint8_t *bytes, uint16_t cnt)
+{
+    // Non-blocking Receive
+    int i;
+
+    for(i = 0; i < cnt; i++)
+    {
+        bufferGet(&Zumo32U4Serial::UART_Buffer, (bytes + i));
+    }
 }
 
 ISR(USART_RX_vect)
 {
-    // TODO: Populate the ISRi
+    // TODO: Populate the ISR
     sei();
     bufferPut(&Zumo32U4Serial::UART_Buffer, UDR0);
     reti();
