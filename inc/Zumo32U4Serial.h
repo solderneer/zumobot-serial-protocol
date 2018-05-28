@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <stddef.h>
+#include <settings.h>
 
 // Circular buffer implementation
 typedef struct
@@ -22,6 +23,7 @@ bool bufferEmpty(circular_buf buf);
 class Zumo32U4Serial 
 {
     public:
+        static uint8_t UART_Buffer_Raw[UART_BUFFER_SIZE];
         static circular_buf UART_Buffer;
         static void UART_TransmitByte(uint8_t byte);
         static void UART_TransmitBytes(uint8_t* bytes, uint16_t cnt);
