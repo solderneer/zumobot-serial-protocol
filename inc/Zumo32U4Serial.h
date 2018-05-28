@@ -19,7 +19,7 @@ int bufferGet(circular_buf* buf, uint8_t* byte);
 bool bufferFull(circular_buf buf);
 bool bufferEmpty(circular_buf buf);
 
-class Zumo32U4Interface 
+class Zumo32U4Serial 
 {
     public:
         static circular_buf UART_Buffer;

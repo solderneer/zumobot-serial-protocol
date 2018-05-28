@@ -1,10 +1,10 @@
 #include <avr/io.h>
-#include <Zumo32U4Interface.h>
+#include <Zumo32U4Serial.h>
 #include <util/setbaud.h>
 #include <avr/interrupt.h>
 #include <settings.h>
 
-void Zumo32U4Interface::init2(void)
+void Zumo32U4Serial::init2(void)
 {
     // Setting up UART registers
     UBRR0H = UBRRH_VALUE;
@@ -21,27 +21,27 @@ void Zumo32U4Interface::init2(void)
 
     // Setting up circular buffer
     uint8_t UART_Buffer_Raw[UART_BUFFER_SIZE];
-    Zumo32U4Interface::UART_Buffer.buffer = UART_Buffer_Raw;
-    Zumo32U4Interface::UART_Buffer.buffSize = UART_BUFFER_SIZE;
+    Zumo32U4Serial::UART_Buffer.buffer = UART_Buffer_Raw;
+    Zumo32U4Serial::UART_Buffer.buffSize = UART_BUFFER_SIZE;
 
-    bufferReset(&Zumo32U4Interface::UART_Buffer);
+    bufferReset(&Zumo32U4Serial::UART_Buffer);
 }
 
-void Zumo32U4Interface::UART_Transmit(uint8_t byte)
+void Zumo32U4Serial::UART_Transmit(uint8_t byte)
 {
 
 }
 
-void Zumo32U4Interface::UART_Receive(uint8_t* byte)
+void Zumo32U4Serial::UART_Receive(uint8_t* byte)
 {
-    bufferGet(&Zumo32U4Interface::UART_Buffer, byte);
+    bufferGet(&Zumo32U4Serial::UART_Buffer, byte);
 }
 
 ISR(USART_RX_vect)
 {
     // TODO: Populate the ISRi
     sei();
-    bufferPut(&Zumo32U4Interface::UART_Buffer, UDR0);
+    bufferPut(&Zumo32U4Serial::UART_Buffer, UDR0);
     reti();
 }
 
