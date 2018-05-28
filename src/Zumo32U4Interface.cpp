@@ -39,7 +39,10 @@ void Zumo32U4Interface::UART_Receive(uint8_t* byte)
 
 ISR(USART_RX_vect)
 {
-    // TODO: Populate the ISR
+    // TODO: Populate the ISRi
+    sei();
+    bufferPut(&Zumo32U4Interface::UART_Buffer, UDR0);
+    reti();
 }
 
 /********Circular Buffer implementation to buffer UART bus*******/

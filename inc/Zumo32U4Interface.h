@@ -22,8 +22,9 @@ bool bufferEmpty(circular_buf buf);
 class Zumo32U4Interface 
 {
     public:
+        static circular_buf UART_Buffer;
         static void UART_Transmit(uint8_t byte);
-        static void UART_Receive(uint8_t* byte);
+        static void UART_Receive(uint8_t* byte); 
     private:
         static inline void init()
         {
@@ -36,5 +37,4 @@ class Zumo32U4Interface
             }
         }
         static void init2();
-        static circular_buf UART_Buffer;
 };
