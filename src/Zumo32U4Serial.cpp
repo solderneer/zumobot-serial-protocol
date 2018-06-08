@@ -14,9 +14,9 @@ void Zumo32U4Serial::init2(void)
     UBRR1L = UBRRL_VALUE;
 
 #if USE_2X
-    UCSR1A |= (1 << U2X1);
+    UCSR1C |= (1 << U2X1);
 #else
-    UCSR1A &= (1 << U2X1);
+    UCSR1C &= (1 << U2X1);
 #endif
 
     UCSR1C = (1 << UCSZ11) | (1 << UCSZ10);
