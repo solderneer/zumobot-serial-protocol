@@ -18,7 +18,7 @@ void Zumo32U4Serial::init2(void)
 #endif
 
     UCSR1B = (1<<RXEN1)|(1<<TXEN1);
-    UCSR1C = (1<<USBS1)|(3<<UCSZ10);
+    UCSR1C = (1<<USBS1)|(3<<UCSZ1 0);
 
     bufferReset(&UART_Buffer);
 }
