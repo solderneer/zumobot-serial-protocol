@@ -15,12 +15,10 @@ void Zumo32U4Serial::init2(void)
 
 #if USE_2X
     UCSR1A |= (1 << U2X1);
-#else
-    UCSR1A &= (1 << U2X1);
 #endif
 
-    UCSR1C = (1 << UCSZ11) | (1 << UCSZ10);
-    UCSR1B = (1 << RXEN1) | (1 << TXEN1) | (1 << RXCIE1);
+    UCSR1B = (1<<RXEN1)|(1<<TXEN1);
+    UCSR1C = (1<<USBS1)|(3<<UCSZ10);
 
     bufferReset(&UART_Buffer);
 }
@@ -80,6 +78,7 @@ ISR(USART1_RX_vect)
 }
 
 /********Circular Buffer implementation to buffer UART bus*******/
+// TODO: Abstract buffer methods into separate class
 
 int bufferReset(circular_buf* buf)
 {
