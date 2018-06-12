@@ -72,8 +72,6 @@ ISR(USART1_RX_vect)
 }
 
 /********Circular Buffer implementation to buffer UART bus*******/
-// TODO: Abstract buffer methods into separate class
-
 int bufferReset(circular_buf* buf)
 {
     int r = -1;
