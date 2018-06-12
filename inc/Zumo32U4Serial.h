@@ -4,6 +4,9 @@
 #include <stddef.h>
 #include <settings.h>
 
+#define USART_BUFFER_SIZE 50
+#define BAUD_PRESCALE (((F_CPU / (USART_BAUDRATE * 16UL))) - 1)
+
 // Circular buffer implementation
 typedef struct
 {
@@ -40,5 +43,5 @@ class Zumo32U4Serial
                 init2();
             }
         }
-        static void init2();
+        static void init2(void);
 };
