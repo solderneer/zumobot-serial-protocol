@@ -17,7 +17,7 @@ void Zumo32U4Serial::init2(void)
     UBRR1L = BAUD_PRESCALE; // Load lower 8-bits of the baud rate value into the low byte of the UBRR register
 
     UCSR1B |= (1 << RXCIE1); // Enable the USART Recieve Complete interrupt (USART_RXC)
-    // bufferReset(&UART_Buffer);
+    bufferReset(&UART_Buffer);
 
     sei(); // Enable the Global Interrupt Enable flag so that interrupts can be processed
 }
@@ -27,7 +27,6 @@ void Zumo32U4Serial::UART_TransmitByte(uint8_t byte)
     // Blocking Transmit
     init();
     while(!(UCSR1A & (1 << UDRE1)));
-    
     UDR1 = byte;
 }
 
@@ -45,11 +44,13 @@ void Zumo32U4Serial::UART_TransmitBytes(uint8_t *bytes, uint16_t cnt)
     }
 }
 
-void Zumo32U4Serial::UART_ReceiveByte(uint8_t* byte)
+int Zumo32U4Serial::UART_ReceiveByte(uint8_t* byte)
 {
     // Non-blocking Receive
+    int status = 0;
     init();
-    bufferGet(&UART_Buffer, byte);
+    status = bufferGet(&UART_Buffer, byte);
+    return status;
 }
 
 void Zumo32U4Serial::UART_ReceiveBytes(uint8_t *bytes, uint16_t cnt)
@@ -67,9 +68,7 @@ void Zumo32U4Serial::UART_ReceiveBytes(uint8_t *bytes, uint16_t cnt)
 
 ISR(USART1_RX_vect)
 {
-    char ReceivedByte;
-    ReceivedByte = UDR1; // Fetch the received byte value into the variable "ByteReceived"
-    UDR1 = ReceivedByte; // Echo back the received byte back to the computer
+    bufferPut(&Zumo32U4Serial::UART_Buffer, UDR1);
 }
 
 /********Circular Buffer implementation to buffer UART bus*******/

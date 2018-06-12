@@ -30,7 +30,7 @@ class Zumo32U4Serial
         static circular_buf UART_Buffer;
         static void UART_TransmitByte(uint8_t byte);
         static void UART_TransmitBytes(uint8_t* bytes, uint16_t cnt);
-        static void UART_ReceiveByte(uint8_t* byte); 
+        static int UART_ReceiveByte(uint8_t* byte); 
         static void UART_ReceiveBytes(uint8_t* bytes, uint16_t cnt);
     private:
         static inline void init()

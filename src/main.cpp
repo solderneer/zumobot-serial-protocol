@@ -8,11 +8,15 @@
 
 int main(void)
 {
-    char* hello_world = "Hello World!\n";
     sei(); //Enabling global interrupts
-    Zumo32U4Serial::UART_TransmitBytes((uint8_t*)hello_world, 13);
-	for (;;) {
+    uint8_t recieved = 0;
+    int status = 0;
 
+	for (;;) {
+        status = Zumo32U4Serial::UART_ReceiveByte(&recieved); 
+        if(status == -1)
+            continue;
+        //Zumo32U4Serial::UART_TransmitByte(recieved);
 	}
 	return -1;
 }
