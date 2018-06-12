@@ -8,13 +8,13 @@ circular_buf Zumo32U4Serial::UART_Buffer = {Zumo32U4Serial::UART_Buffer_Raw, 0, 
 
 void Zumo32U4Serial::init2(void)
 {
-    cli();
+    cli(); // Critical section of code: initializes UART interrupts
     // Setting up UART registers
     UBRR1H = (BAUD_PRESCALE >> 8);
     UBRR1L = BAUD_PRESCALE;
 
     UCSR1B = (1<<RXEN1)|(1<<TXEN1)|(1<<RXCIE1);
-    UCSR1C = (1<<USBS1)|(3<<UCSZ1 0);
+    UCSR1C = (1<<USBS1)|(3<<UCSZ10);
     sei();
 
     bufferReset(&UART_Buffer);
@@ -66,12 +66,13 @@ void Zumo32U4Serial::UART_ReceiveBytes(uint8_t *bytes, uint16_t cnt)
     }
 }
 
+/*
 ISR(USART1_RX_vect)
 {
     cli();
     bufferPut(&Zumo32U4Serial::UART_Buffer, UDR1);
     sei();
-}
+}*/
 
 /********Circular Buffer implementation to buffer UART bus*******/
 // TODO: Abstract buffer methods into separate class

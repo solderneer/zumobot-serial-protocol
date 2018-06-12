@@ -5,4 +5,6 @@
 #define USART_BAUDRATE 9600
 #define USART_BUFFER_SIZE 50
 
+#define BAUD_PRESCALE (((F_CPU / (USART_BAUDRATE * 16UL))) - 1)
+
 #endif /* __SETTINGS_H */
