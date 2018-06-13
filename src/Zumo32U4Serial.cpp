@@ -2,10 +2,11 @@
 #include <avr/interrupt.h>
 
 #include "settings.h"
+#include "buffer.h"
 #include "Zumo32U4Serial.h"
 
-uint8_t Zumo32U4Serial::UART_Buffer_Raw[USART_BUFFER_SIZE];
-circular_buf Zumo32U4Serial::UART_Buffer = {Zumo32U4Serial::UART_Buffer_Raw, 0, 0, USART_BUFFER_SIZE};
+uint8_t Zumo32U4Serial::UART_Buffer_Raw[UART_BUFFER_SIZE];
+Buffer Zumo32U4Serial::UART_Buffer(Zumo32U4Serial::UART_Buffer_Raw, UART_BUFFER_SIZE);
 
 void Zumo32U4Serial::init2(void)
 {
@@ -17,7 +18,7 @@ void Zumo32U4Serial::init2(void)
     UBRR1L = BAUD_PRESCALE; // Load lower 8-bits of the baud rate value into the low byte of the UBRR register
 
     UCSR1B |= (1 << RXCIE1); // Enable the USART Recieve Complete interrupt (USART_RXC)
-    bufferReset(&UART_Buffer);
+    UART_Buffer.bufferReset();
 
     sei(); // Enable the Global Interrupt Enable flag so that interrupts can be processed
 }
@@ -49,7 +50,7 @@ int Zumo32U4Serial::UART_ReceiveByte(uint8_t* byte)
     // Non-blocking Receive
     int status = 0;
     init();
-    status = bufferGet(&UART_Buffer, byte);
+    status = UART_Buffer.bufferGet(byte);
     return status;
 }
 
@@ -62,11 +63,16 @@ void Zumo32U4Serial::UART_ReceiveBytes(uint8_t *bytes, uint16_t cnt)
 
     for(i = 0; i < cnt; i++)
     {
-        bufferGet(&UART_Buffer, (bytes + i));
+        UART_Buffer.bufferGet((bytes + i));
     }
+}
+
+void Zumo32U4Serial::UART_ISR(uint8_t byte)
+{
+    UART_Buffer.bufferPut(byte);
 }
 
 ISR(USART1_RX_vect)
 {
-    bufferPut(&Zumo32U4Serial::UART_Buffer, UDR1);
+    Zumo32U4Serial::UART_ISR(UDR1);
 }
