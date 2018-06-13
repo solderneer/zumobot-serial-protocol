@@ -3,17 +3,17 @@
 
 #include "buffer.h"
 
-Buffer::Buffer(uint16_t buff_size)
+Buffer::Buffer(uint8_t* buffer, uint16_t buff_size)
 {
-    buffer = new uint8_t[buff_size];
     readPtr = 0;
     writePtr = 0;
+    this->buffer = buffer;
     this->buff_size = buff_size;
 }
 
 Buffer::~Buffer()
 {
-    delete buffer;
+    // Don't need to do anything here
 }
 
 void Buffer::bufferReset(void)
@@ -38,6 +38,7 @@ int Buffer::bufferGet(uint8_t *byte)
     if(byte && !(bufferEmpty()))
     {
         *byte = buffer[readPtr];
+        readPtr = (readPtr + 1) % buff_size;
         return SUCCESS;
     }
 

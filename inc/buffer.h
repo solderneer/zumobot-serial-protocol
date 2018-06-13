@@ -7,7 +7,7 @@ typedef enum {FAIL, SUCCESS} status_t;
 
 class Buffer {
 public:
-    Buffer(uint16_t buff_size);
+    Buffer(uint8_t* buffer, uint16_t buff_size);
     ~Buffer();
 
     void bufferReset(void);
