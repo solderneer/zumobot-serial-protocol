@@ -27,5 +27,5 @@ private:
         }
     }
 
-    static void init2();
+    static void init2(void);
 };
