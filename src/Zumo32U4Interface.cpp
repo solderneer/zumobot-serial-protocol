@@ -14,7 +14,7 @@ void Zumo32U4Interface::pollState(void)
 
 }
 
-command_t Zumo32U4Interface::getCommand(void)
+void Zumo32U4Interface::getCommand(void)
 {
 
 }
