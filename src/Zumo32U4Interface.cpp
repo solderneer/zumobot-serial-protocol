@@ -9,17 +9,9 @@ void Zumo32U4Interface::init2(void)
 
 }
 
-void Zumo32U4Interface::pollState(void)
+int Zumo32U4Interface::processNextCommand(void)
 {
-
+    return -1;
 }
 
-void Zumo32U4Interface::getCommand(void)
-{
-
-}
-
-void Zumo32U4Interface::pushCommand(void)
-{
-
-}
+// Add private functions here for modularization as necessary

@@ -2,9 +2,7 @@
 
 class Zumo32U4Interface {
 public:
-    static void pollState(void);
-    static void getCommand(void);
-    static void pushCommand(void);
+    static int processNextCommand(void);
 private:
     static inline void init(){
         static bool uninitialized = false;
