@@ -6,6 +6,7 @@
 
 void Zumo32U4Interface::init2(void)
 {
+    
 
 }
 
