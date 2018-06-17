@@ -15,8 +15,10 @@ void Zumo32U4Interface::processNextCommand(void)
     // Get the current byte
     uint8_t byte = 0;
 
-    bool dir_left, dir_right = false;
-    int16_t rmotor_speed, lmotor_speed = 0;
+    bool dir_left = false; 
+    bool dir_right = false;
+    int16_t rmotor_speed = 0;
+    int16_t lmotor_speed = 0;
 
     state_t state = START;
 

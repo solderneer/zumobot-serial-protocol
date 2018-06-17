@@ -14,9 +14,10 @@ int main(void)
 
 	for (;;) {
         status = Zumo32U4Serial::UART_ReceiveByte(&recieved); 
-        if(status == -1)
-            continue;
-        //Zumo32U4Serial::UART_TransmitByte(recieved);
+        while(status == 0)
+            status = Zumo32U4Serial::UART_ReceiveByte(&recieved); 
+
+        Zumo32U4Serial::UART_TransmitByte(recieved);
 	}
 	return -1;
 }
