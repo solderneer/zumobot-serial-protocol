@@ -30,9 +30,37 @@ int Zumo32U4Interface::processNextCommand(void)
     {
         // Add state machine for reading sensor byte
     }
-
-
     return -1;
 }
 
 // Add private functions here for modularization as necessary
+
+int stateMachine(uint8_t* byte)
+{
+    int state = 0; // should give more verbose state declarations
+    bool dir_left, dir_right;
+    while(1)
+    {
+        switch(state)
+        {
+            case 0:
+                if(*byte & 0b10000000)
+                    state = 2;
+                else 
+                    state = 1;
+            case 1:
+                state = 10; // No idea how to deal with this
+            case 2:
+                if(*byte & 0b00000010) // Checking left motor direction
+                    dir_left = true;
+                else
+                    dir_left = false;
+
+                if(*byte & 0b00000001) // Checking right motor direction
+                    dir_right = true;
+                else
+                    dir_right = false;
+        }
+    }
+    return -1;
+}
