@@ -1,7 +1,11 @@
 #pragma once
 #include <stdint.h>
 
-typedef enum {UNSET, CONTROL, SENSOR} command_t;
+typedef enum
+{
+    START, CONTROL_1, CONTROL_2, CONTROL_3, 
+    CONTROL_4, SENSOR_1, END
+} state_t;
 
 class Zumo32U4Interface {
 public:
