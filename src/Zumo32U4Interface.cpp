@@ -15,6 +15,7 @@ int Zumo32U4Interface::processNextCommand(void)
     uint8_t byte, state = 0;
     command_t command = UNSET;
     bool dir_left, dir_right = false;
+    int16_t rmotor_speed,lmotor_speed = 0;
 
     Zumo32U4Serial::UART_ReceiveByte(&byte);
     while(1)
@@ -38,9 +39,22 @@ int Zumo32U4Interface::processNextCommand(void)
                 if(byte & 0b00000001) // Checking right motor direction
                     dir_right = true;
                 state = 3;
+                break;
+            case 3:
+                if(Zumo32U4Serial::UART_ReceiveByte(&byte) == -1) // Getting next byte for left motor
+                    break;
+                lmotor_speed = calculateMotorSpeed()
+
         }
     }
     return -1;
 }
 
 // Add private functions here for modularization as necessary
+
+int16_t Zumo32U4Interface::calculateMotorSpeed(uint8_t* byte, bool direction)
+{
+    // Use this helper function to convert 8 bit unsigned motor speed to signed motor speed
+    // between -400 and 400
+    return -400;
+}

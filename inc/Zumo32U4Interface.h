@@ -18,5 +18,5 @@ private:
     }
 
     static void init2(void);
-
+    static int16_t calculateMotorSpeed(uint8_t* byte, bool direction);
 };
