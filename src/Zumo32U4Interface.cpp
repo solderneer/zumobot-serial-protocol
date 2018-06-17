@@ -69,5 +69,11 @@ int16_t Zumo32U4Interface::calculateMotorSpeed(uint8_t* byte, bool direction)
 {
     // Use this helper function to convert 8 bit unsigned motor speed to signed motor speed
     // between -400 and 400
-    return -400;
+    uint16_t temp = (uint16_t)(*byte << 1);
+    if(direction) // If direction is true, apply 2s complement
+    {
+        temp ^= 0xFFFF; // flip all bits using XOR
+        temp += 1;
+    }
+    return (int16_t)(temp);
 }
