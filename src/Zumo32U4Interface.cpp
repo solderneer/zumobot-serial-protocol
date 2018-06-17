@@ -12,55 +12,35 @@ void Zumo32U4Interface::init2(void)
 int Zumo32U4Interface::processNextCommand(void)
 {
     // Get the current byte
-    uint8_t currentByte = 0;
-    command_t commandStatus = UNSET;
-    Zumo32U4Serial::UART_ReceiveByte(&currentByte);
+    uint8_t byte, state = 0;
+    command_t command = UNSET;
+    bool dir_left, dir_right = false;
 
-    if(commandStatus == UNSET)
-    {
-        // Add state machine for reading command byte
-    }
-
-    if(commandStatus == CONTROL)
-    {
-        // Add state machine for reading control byte
-    }
-
-    if(commandStatus == SENSOR)
-    {
-        // Add state machine for reading sensor byte
-    }
-    return -1;
-}
-
-// Add private functions here for modularization as necessary
-
-int stateMachine(uint8_t* byte)
-{
-    int state = 0; // should give more verbose state declarations
-    bool dir_left, dir_right;
+    Zumo32U4Serial::UART_ReceiveByte(&byte);
     while(1)
     {
         switch(state)
         {
             case 0:
-                if(*byte & 0b10000000)
+                if(byte & 0b10000000)
                     state = 2;
-                else 
+                else
                     state = 1;
+                break;
             case 1:
-                state = 10; // No idea how to deal with this
+                command = SENSOR;
+                state = 10;
+                break;
             case 2:
-                if(*byte & 0b00000010) // Checking left motor direction
+                command = CONTROL;
+                if(byte & 0b00000010) // Checking left motor direction
                     dir_left = true;
-                else
-                    dir_left = false;
-
-                if(*byte & 0b00000001) // Checking right motor direction
+                if(byte & 0b00000001) // Checking right motor direction
                     dir_right = true;
-                else
-                    dir_right = false;
+                state = 3;
         }
     }
     return -1;
 }
+
+// Add private functions here for modularization as necessary

@@ -1,4 +1,5 @@
 #pragma once
+#include <stdint.h>
 
 typedef enum {UNSET, CONTROL, SENSOR} command_t;
 
@@ -17,4 +18,5 @@ private:
     }
 
     static void init2(void);
+
 };
