@@ -14,6 +14,7 @@ void Zumo32U4Interface::processNextCommand(void)
 {
     // Get the current byte
     uint8_t byte = 0;
+    uint8_t status = 0;
 
     bool dir_left = false; 
     bool dir_right = false;
@@ -22,7 +23,10 @@ void Zumo32U4Interface::processNextCommand(void)
 
     state_t state = START;
 
-    Zumo32U4Serial::UART_ReceiveByte(&byte);
+    status = Zumo32U4Serial::UART_ReceiveByte(&byte);
+    if(status == 0)
+        state = END;
+
     while(state != END)
     {
         switch(state)
@@ -44,13 +48,13 @@ void Zumo32U4Interface::processNextCommand(void)
                 state = CONTROL_2;
                 break;
             case CONTROL_2: // Getting next byte for left motor
-                if(Zumo32U4Serial::UART_ReceiveByte(&byte) == -1)
+                if(Zumo32U4Serial::UART_ReceiveByte(&byte) == 0)
                     break;
                 lmotor_speed = calculateMotorSpeed(&byte, dir_left);
                 state = CONTROL_3;
                 break;
             case CONTROL_3: // Getting next byte for right motor
-                if(Zumo32U4Serial::UART_ReceiveByte(&byte) == -1)
+                if(Zumo32U4Serial::UART_ReceiveByte(&byte) == 0)
                     break;
                 rmotor_speed = calculateMotorSpeed(&byte, dir_right);
                 state = CONTROL_4;
