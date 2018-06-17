@@ -2,6 +2,7 @@
 #include <avr/io.h>
 
 #include "Zumo32U4Serial.h"
+#include "Zumo32U4Motors.h"
 #include "Zumo32U4Interface.h"
 
 void Zumo32U4Interface::init2(void)
@@ -9,7 +10,7 @@ void Zumo32U4Interface::init2(void)
     // Add initialization code here (there's nth to initialize right now)
 }
 
-int Zumo32U4Interface::processNextCommand(void)
+void Zumo32U4Interface::processNextCommand(void)
 {
     // Get the current byte
     uint8_t byte, state = 0;
@@ -18,7 +19,7 @@ int Zumo32U4Interface::processNextCommand(void)
     int16_t rmotor_speed,lmotor_speed = 0;
 
     Zumo32U4Serial::UART_ReceiveByte(&byte);
-    while(1)
+    while(state != 6)
     {
         switch(state)
         {
@@ -40,14 +41,24 @@ int Zumo32U4Interface::processNextCommand(void)
                     dir_right = true;
                 state = 3;
                 break;
-            case 3:
-                if(Zumo32U4Serial::UART_ReceiveByte(&byte) == -1) // Getting next byte for left motor
+            case 3: // Getting next byte for left motor
+                if(Zumo32U4Serial::UART_ReceiveByte(&byte) == -1)
                     break;
-                lmotor_speed = calculateMotorSpeed()
-
+                lmotor_speed = calculateMotorSpeed(&byte, dir_left);
+                state = 4;
+                break;
+            case 4: // Getting next byte for right motor
+                if(Zumo32U4Serial::UART_ReceiveByte(&byte) == -1)
+                    break;
+                rmotor_speed = calculateMotorSpeed(&byte, dir_right);
+                state = 5;
+                break;
+            case 5: // Setting motor directions
+                Zumo32U4Motors::setSpeeds(lmotor_speed, rmotor_speed);
+                state = 6;
+                break;
         }
     }
-    return -1;
 }
 
 // Add private functions here for modularization as necessary

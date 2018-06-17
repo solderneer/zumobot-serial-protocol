@@ -5,7 +5,7 @@ typedef enum {UNSET, CONTROL, SENSOR} command_t;
 
 class Zumo32U4Interface {
 public:
-    static int processNextCommand(void);
+    static void processNextCommand(void);
 private:
     static inline void init(){
         static bool uninitialized = false;
