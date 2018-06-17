@@ -1,5 +1,7 @@
 #pragma once
 
+typedef enum {UNSET, CONTROL, SENSOR} command_t;
+
 class Zumo32U4Interface {
 public:
     static int processNextCommand(void);
